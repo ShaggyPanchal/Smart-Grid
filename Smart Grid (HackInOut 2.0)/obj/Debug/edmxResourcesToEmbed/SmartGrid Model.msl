@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="SmartGridSQLModelStoreContainer" CdmEntityContainer="SmartGridSQLEntities1">
+    <EntitySetMapping Name="CMDeviceInfoes">
+      <EntityTypeMapping TypeName="SmartGridSQLModel.CMDeviceInfo">
+        <MappingFragment StoreEntitySet="CMDeviceInfo">
+          <ScalarProperty Name="DeviceSerialNumber" ColumnName="DeviceSerialNumber" />
+          <ScalarProperty Name="LastOnlineTime" ColumnName="LastOnlineTime" />
+          <ScalarProperty Name="InstallationDate" ColumnName="InstallationDate" />
+          <ScalarProperty Name="Latitude" ColumnName="Latitude" />
+          <ScalarProperty Name="Longitude" ColumnName="Longitude" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="GridInfoes">
+      <EntityTypeMapping TypeName="SmartGridSQLModel.GridInfo">
+        <MappingFragment StoreEntitySet="GridInfo">
+          <ScalarProperty Name="GridId" ColumnName="GridId" />
+          <ScalarProperty Name="DeviceSerialNumber" ColumnName="DeviceSerialNumber" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Latitude" ColumnName="Latitude" />
+          <ScalarProperty Name="Longitude" ColumnName="Longitude" />
+          <ScalarProperty Name="Area" ColumnName="Area" />
+          <ScalarProperty Name="Pincode" ColumnName="Pincode" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="GridStatus">
+      <EntityTypeMapping TypeName="SmartGridSQLModel.GridStatu">
+        <MappingFragment StoreEntitySet="GridStatus">
+          <ScalarProperty Name="DeviceSerialNumber" ColumnName="DeviceSerialNumber" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="Voltage" ColumnName="Voltage" />
+          <ScalarProperty Name="Frequency" ColumnName="Frequency" />
+          <ScalarProperty Name="LastPingTime" ColumnName="LastPingTime" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="GridPolylineInfoes">
+      <EntityTypeMapping TypeName="SmartGridSQLModel.GridPolylineInfo">
+        <MappingFragment StoreEntitySet="GridPolylineInfo">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Latitude1" ColumnName="Latitude1" />
+          <ScalarProperty Name="Longitude1" ColumnName="Longitude1" />
+          <ScalarProperty Name="Latitude2" ColumnName="Latitude2" />
+          <ScalarProperty Name="Longitude2" ColumnName="Longitude2" />
+          <ScalarProperty Name="AreaName" ColumnName="AreaName" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

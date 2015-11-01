@@ -1,0 +1,276 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="SmartGridSQLModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="CMDeviceInfo">
+          <Key>
+            <PropertyRef Name="DeviceSerialNumber" />
+          </Key>
+          <Property Name="DeviceSerialNumber" Type="nchar" MaxLength="10" Nullable="false" />
+          <Property Name="LastOnlineTime" Type="datetime" Nullable="false" />
+          <Property Name="InstallationDate" Type="datetime" Nullable="false" />
+          <Property Name="Latitude" Type="float" Nullable="false" />
+          <Property Name="Longitude" Type="float" Nullable="false" />
+        </EntityType>
+        <EntityType Name="GridInfo">
+          <Key>
+            <PropertyRef Name="GridId" />
+          </Key>
+          <Property Name="GridId" Type="int" Nullable="false" />
+          <Property Name="DeviceSerialNumber" Type="nchar" MaxLength="10" />
+          <Property Name="Name" Type="nchar" MaxLength="20" Nullable="false" />
+          <Property Name="Latitude" Type="float" Nullable="false" />
+          <Property Name="Longitude" Type="float" Nullable="false" />
+          <Property Name="Area" Type="nchar" MaxLength="20" Nullable="false" />
+          <Property Name="Pincode" Type="numeric" Precision="10" Scale="0" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'SmartGridSQL.dbo.GridPolylineInfo' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="GridPolylineInfo">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="Latitude1" />
+            <PropertyRef Name="Longitude1" />
+            <PropertyRef Name="Latitude2" />
+            <PropertyRef Name="Longitude2" />
+            <PropertyRef Name="AreaName" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Latitude1" Type="decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="Longitude1" Type="decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="Latitude2" Type="decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="Longitude2" Type="decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="AreaName" Type="nchar" MaxLength="20" Nullable="false" />
+        </EntityType>
+        <EntityType Name="GridStatus">
+          <Key>
+            <PropertyRef Name="DeviceSerialNumber" />
+          </Key>
+          <Property Name="DeviceSerialNumber" Type="nchar" MaxLength="10" Nullable="false" />
+          <Property Name="Status" Type="numeric" Precision="7" Scale="0" Nullable="false" />
+          <Property Name="Voltage" Type="int" Nullable="false" />
+          <Property Name="Frequency" Type="int" Nullable="false" />
+          <Property Name="LastPingTime" Type="datetime" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_GridInfo_ToTable">
+          <End Role="CMDeviceInfo" Type="Self.CMDeviceInfo" Multiplicity="0..1" />
+          <End Role="GridInfo" Type="Self.GridInfo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CMDeviceInfo">
+              <PropertyRef Name="DeviceSerialNumber" />
+            </Principal>
+            <Dependent Role="GridInfo">
+              <PropertyRef Name="DeviceSerialNumber" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_GridPolylineInfo_ToTable">
+          <End Role="GridInfo" Type="Self.GridInfo" Multiplicity="1" />
+          <End Role="GridPolylineInfo" Type="Self.GridPolylineInfo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GridInfo">
+              <PropertyRef Name="GridId" />
+            </Principal>
+            <Dependent Role="GridPolylineInfo">
+              <PropertyRef Name="Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="SmartGridSQLModelStoreContainer">
+          <EntitySet Name="CMDeviceInfo" EntityType="Self.CMDeviceInfo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="GridInfo" EntityType="Self.GridInfo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="GridStatus" EntityType="Self.GridStatus" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="GridPolylineInfo" EntityType="Self.GridPolylineInfo" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [GridPolylineInfo].[Id] AS [Id], 
+    [GridPolylineInfo].[Latitude1] AS [Latitude1], 
+    [GridPolylineInfo].[Longitude1] AS [Longitude1], 
+    [GridPolylineInfo].[Latitude2] AS [Latitude2], 
+    [GridPolylineInfo].[Longitude2] AS [Longitude2], 
+    [GridPolylineInfo].[AreaName] AS [AreaName]
+    FROM [dbo].[GridPolylineInfo] AS [GridPolylineInfo]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_GridInfo_ToTable" Association="Self.FK_GridInfo_ToTable">
+            <End Role="CMDeviceInfo" EntitySet="CMDeviceInfo" />
+            <End Role="GridInfo" EntitySet="GridInfo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_GridPolylineInfo_ToTable" Association="Self.FK_GridPolylineInfo_ToTable">
+            <End Role="GridInfo" EntitySet="GridInfo" />
+            <End Role="GridPolylineInfo" EntitySet="GridPolylineInfo" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="SmartGridSQLModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="CMDeviceInfo">
+          <Key>
+            <PropertyRef Name="DeviceSerialNumber" />
+          </Key>
+          <Property Name="DeviceSerialNumber" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="LastOnlineTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="InstallationDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Latitude" Type="Double" Nullable="false" />
+          <Property Name="Longitude" Type="Double" Nullable="false" />
+          <NavigationProperty Name="GridInfoes" Relationship="Self.FK_GridInfo_ToTable" FromRole="CMDeviceInfo" ToRole="GridInfo" />
+        </EntityType>
+        <EntityType Name="GridInfo">
+          <Key>
+            <PropertyRef Name="GridId" />
+          </Key>
+          <Property Name="GridId" Type="Int32" Nullable="false" />
+          <Property Name="DeviceSerialNumber" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="Name" Type="String" MaxLength="20" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="Latitude" Type="Double" Nullable="false" />
+          <Property Name="Longitude" Type="Double" Nullable="false" />
+          <Property Name="Area" Type="String" MaxLength="20" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="Pincode" Type="Decimal" Precision="10" Scale="0" Nullable="false" />
+          <NavigationProperty Name="CMDeviceInfo" Relationship="Self.FK_GridInfo_ToTable" FromRole="GridInfo" ToRole="CMDeviceInfo" />
+          <NavigationProperty Name="GridPolylineInfoes" Relationship="Self.FK_GridPolylineInfo_ToTable" FromRole="GridInfo" ToRole="GridPolylineInfo" />
+        </EntityType>
+        <EntityType Name="GridStatu">
+          <Key>
+            <PropertyRef Name="DeviceSerialNumber" />
+          </Key>
+          <Property Name="DeviceSerialNumber" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="Status" Type="Decimal" Precision="7" Scale="0" Nullable="false" />
+          <Property Name="Voltage" Type="Int32" Nullable="false" />
+          <Property Name="Frequency" Type="Int32" Nullable="false" />
+          <Property Name="LastPingTime" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="GridPolylineInfo">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="Latitude1" />
+            <PropertyRef Name="Longitude1" />
+            <PropertyRef Name="Latitude2" />
+            <PropertyRef Name="Longitude2" />
+            <PropertyRef Name="AreaName" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Latitude1" Type="Decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="Longitude1" Type="Decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="Latitude2" Type="Decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="Longitude2" Type="Decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="AreaName" Type="String" MaxLength="20" FixedLength="true" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="GridInfo" Relationship="Self.FK_GridPolylineInfo_ToTable" FromRole="GridPolylineInfo" ToRole="GridInfo" />
+        </EntityType>
+        <Association Name="FK_GridInfo_ToTable">
+          <End Role="CMDeviceInfo" Type="Self.CMDeviceInfo" Multiplicity="0..1" />
+          <End Role="GridInfo" Type="Self.GridInfo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CMDeviceInfo">
+              <PropertyRef Name="DeviceSerialNumber" />
+            </Principal>
+            <Dependent Role="GridInfo">
+              <PropertyRef Name="DeviceSerialNumber" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_GridPolylineInfo_ToTable">
+          <End Role="GridInfo" Type="Self.GridInfo" Multiplicity="1" />
+          <End Role="GridPolylineInfo" Type="Self.GridPolylineInfo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GridInfo">
+              <PropertyRef Name="GridId" />
+            </Principal>
+            <Dependent Role="GridPolylineInfo">
+              <PropertyRef Name="Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="SmartGridSQLEntities1" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="CMDeviceInfoes" EntityType="Self.CMDeviceInfo" />
+          <EntitySet Name="GridInfoes" EntityType="Self.GridInfo" />
+          <EntitySet Name="GridStatus" EntityType="Self.GridStatu" />
+          <EntitySet Name="GridPolylineInfoes" EntityType="Self.GridPolylineInfo" />
+          <AssociationSet Name="FK_GridInfo_ToTable" Association="Self.FK_GridInfo_ToTable">
+            <End Role="CMDeviceInfo" EntitySet="CMDeviceInfoes" />
+            <End Role="GridInfo" EntitySet="GridInfoes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_GridPolylineInfo_ToTable" Association="Self.FK_GridPolylineInfo_ToTable">
+            <End Role="GridInfo" EntitySet="GridInfoes" />
+            <End Role="GridPolylineInfo" EntitySet="GridPolylineInfoes" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="SmartGridSQLModelStoreContainer" CdmEntityContainer="SmartGridSQLEntities1">
+          <EntitySetMapping Name="CMDeviceInfoes">
+            <EntityTypeMapping TypeName="SmartGridSQLModel.CMDeviceInfo">
+              <MappingFragment StoreEntitySet="CMDeviceInfo">
+                <ScalarProperty Name="DeviceSerialNumber" ColumnName="DeviceSerialNumber" />
+                <ScalarProperty Name="LastOnlineTime" ColumnName="LastOnlineTime" />
+                <ScalarProperty Name="InstallationDate" ColumnName="InstallationDate" />
+                <ScalarProperty Name="Latitude" ColumnName="Latitude" />
+                <ScalarProperty Name="Longitude" ColumnName="Longitude" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="GridInfoes">
+            <EntityTypeMapping TypeName="SmartGridSQLModel.GridInfo">
+              <MappingFragment StoreEntitySet="GridInfo">
+                <ScalarProperty Name="GridId" ColumnName="GridId" />
+                <ScalarProperty Name="DeviceSerialNumber" ColumnName="DeviceSerialNumber" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Latitude" ColumnName="Latitude" />
+                <ScalarProperty Name="Longitude" ColumnName="Longitude" />
+                <ScalarProperty Name="Area" ColumnName="Area" />
+                <ScalarProperty Name="Pincode" ColumnName="Pincode" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="GridStatus">
+            <EntityTypeMapping TypeName="SmartGridSQLModel.GridStatu">
+              <MappingFragment StoreEntitySet="GridStatus">
+                <ScalarProperty Name="DeviceSerialNumber" ColumnName="DeviceSerialNumber" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Voltage" ColumnName="Voltage" />
+                <ScalarProperty Name="Frequency" ColumnName="Frequency" />
+                <ScalarProperty Name="LastPingTime" ColumnName="LastPingTime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="GridPolylineInfoes">
+            <EntityTypeMapping TypeName="SmartGridSQLModel.GridPolylineInfo">
+              <MappingFragment StoreEntitySet="GridPolylineInfo">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Latitude1" ColumnName="Latitude1" />
+                <ScalarProperty Name="Longitude1" ColumnName="Longitude1" />
+                <ScalarProperty Name="Latitude2" ColumnName="Latitude2" />
+                <ScalarProperty Name="Longitude2" ColumnName="Longitude2" />
+                <ScalarProperty Name="AreaName" ColumnName="AreaName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
