@@ -80,6 +80,6 @@
                 </Grid>
             </Grid>
         </Border>
-        <WPF:Map x:Name="MainMap" Grid.Row="1" Center="21.167543, 72.78511" ZoomLevel="15" CredentialsProvider=" AsCeKT1XO-V0UJ1ctO_irkEWzM-fsw1vSqtVKXcz76xCtyCut0KnzusfID7qtM51"/>
+        <WPF:Map x:Name="MainMap" Grid.Row="1" Center="21.167543, 72.78511" ZoomLevel="15" CredentialsProvider="{YOUR KEY}"/>
     </Grid>
 </Window>
